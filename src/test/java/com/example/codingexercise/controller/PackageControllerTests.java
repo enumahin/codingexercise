@@ -2,6 +2,7 @@ package com.example.codingexercise.controller;
 
 import com.example.codingexercise.model.Package;
 import com.example.codingexercise.repository.PackageRepository;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,20 +10,27 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+/**
+ * Integration tests for {@link PackageController} exercising the HTTP endpoints.
+ */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class PackageControllerTests {
 
-	private final TestRestTemplate restTemplate;
+    private final TestRestTemplate restTemplate;
     private final PackageRepository packageRepository;
 
+    /**
+     * Creates a new test instance with injected collaborators.
+     *
+     * @param restTemplate      HTTP client used to call the controller endpoints
+     * @param packageRepository repository used to verify persisted data
+     */
     @Autowired
     PackageControllerTests(TestRestTemplate restTemplate, PackageRepository packageRepository) {
-		this.restTemplate = restTemplate;
+        this.restTemplate = restTemplate;
         this.packageRepository = packageRepository;
     }
 

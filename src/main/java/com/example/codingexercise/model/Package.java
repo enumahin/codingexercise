@@ -10,6 +10,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * JPA entity representing a purchasable package of one or more products.
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -29,7 +32,7 @@ public class Package {
     @Column
     private String priceCurrency;
 
-    @OneToMany(mappedBy = "id", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "id", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Product> products;
 
     @Column

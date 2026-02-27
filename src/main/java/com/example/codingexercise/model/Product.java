@@ -9,6 +9,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * JPA entity representing a product that can be included in a package.
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * Data transfer object representing a package and its calculated pricing.
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

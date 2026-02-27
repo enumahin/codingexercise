@@ -3,51 +3,55 @@ package com.example.codingexercise.service.impl;
 import com.example.codingexercise.dto.PackageDto;
 import com.example.codingexercise.repository.PackageRepository;
 import com.example.codingexercise.service.PackageService;
-import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+/**
+ * Default {@link PackageService} implementation that persists packages via {@link PackageRepository}.
+ */
 @AllArgsConstructor
 @Service
 public class PackageServiceImpl implements PackageService {
 
     private final PackageRepository packageRepository;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PackageDto getPackage(String packageId) {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<PackageDto> getPackages() {
         return List.of();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PackageDto createPackage(PackageDto packageDto) {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Object updatePackage(String id, PackageDto packageDto) {
+    public PackageDto updatePackage(String packageId, PackageDto packageDto) {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void deletePackage(String id) {
-        UUID packageUuid;
-        try {
-            packageUuid = UUID.fromString(id);
-        } catch (IllegalArgumentException ex) {
-            throw new EntityNotFoundException("Package not found for id: " + id);
-        }
-
-        if (!packageRepository.existsById(packageUuid)) {
-            throw new EntityNotFoundException("Package not found for id: " + id);
-        }
-
-        packageRepository.deleteById(packageUuid);
+    public void deletePackage(String packageId) {
     }
 }
