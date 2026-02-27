@@ -1,7 +1,13 @@
 package com.example.codingexercise.model;
 
-import jakarta.persistence.*;
-
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -33,7 +39,7 @@ public class Package {
     private String priceCurrency;
 
     @OneToMany(mappedBy = "id", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Product> products;
+    private Set<PackageProduct> packageProducts;
 
     @Column
     private double packagePrice;
@@ -43,17 +49,21 @@ public class Package {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Package aPackage)) return false;
-        return Double.compare(packagePrice, aPackage.packagePrice) == 0
-                && Double.compare(exchangeRate, aPackage.exchangeRate) == 0
-                && Objects.equals(packageId, aPackage.packageId) && Objects.equals(packageName, aPackage.packageName)
-                && Objects.equals(packageDescription, aPackage.packageDescription)
-                && Objects.equals(priceCurrency, aPackage.priceCurrency) && Objects.equals(products, aPackage.products);
+        if (!(o instanceof Package otherPackage)) {
+            return false;
+        }
+        return Double.compare(packagePrice, otherPackage.packagePrice) == 0
+                && Double.compare(exchangeRate, otherPackage.exchangeRate) == 0
+                && Objects.equals(packageId, otherPackage.packageId)
+                && Objects.equals(packageName, otherPackage.packageName)
+                && Objects.equals(packageDescription, otherPackage.packageDescription)
+                && Objects.equals(priceCurrency, otherPackage.priceCurrency)
+                && Objects.equals(packageProducts, otherPackage.packageProducts);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(packageId, packageName, packageDescription, priceCurrency, products, packagePrice,
+        return Objects.hash(packageId, packageName, packageDescription, priceCurrency, packageProducts, packagePrice,
                 exchangeRate);
     }
 }

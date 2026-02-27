@@ -4,7 +4,11 @@ import com.example.codingexercise.dto.PackageDto;
 import com.example.codingexercise.repository.PackageRepository;
 import com.example.codingexercise.service.PackageService;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import lombok.AllArgsConstructor;
+
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,7 +24,7 @@ public class PackageServiceImpl implements PackageService {
      * {@inheritDoc}
      */
     @Override
-    public PackageDto getPackage(String packageId) {
+    public PackageDto getPackage(String packageId, boolean includeVoided) {
         return null;
     }
 
@@ -28,8 +32,12 @@ public class PackageServiceImpl implements PackageService {
      * {@inheritDoc}
      */
     @Override
-    public List<PackageDto> getPackages() {
-        return List.of();
+    public List<PackageDto> getPackages(boolean includeVoided) {
+        return packageRepository.findAll(
+            includeVoided ? null : Specification.where(VoidedSpecification.notVoided()))
+                .stream()
+                .map(PackageDto::from)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -53,5 +61,9 @@ public class PackageServiceImpl implements PackageService {
      */
     @Override
     public void deletePackage(String packageId) {
+        Package package = packageRepository.findById(packageId)
+                .orElseThrow(() -> new PackageNotFoundException(packageId));
+        package.setVoided(voided);
+        packageRepository.save(package);
     }
 }

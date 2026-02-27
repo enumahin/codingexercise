@@ -1,7 +1,12 @@
 package com.example.codingexercise.model;
 
-import jakarta.persistence.*;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import java.util.Objects;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -17,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Getter
 @Entity(name = "products")
-public class Product {
+public class PackageProduct {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -26,9 +31,9 @@ public class Product {
     @Column(nullable = false)
     private String productId;
 
-    @JoinColumn
+    @JoinColumn(name = "package_id")
     @ManyToOne
-    private Package packageId;
+    private Package productPackage;
 
     @Column(nullable = false)
     private String productName;
@@ -41,10 +46,13 @@ public class Product {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Product product)) return false;
-        return Double.compare(usdPrice, product.usdPrice) == 0 && Objects.equals(productId, product.productId)
-                && Objects.equals(productName, product.productName)
-                && Objects.equals(productDescription, product.productDescription);
+        if (!(o instanceof PackageProduct otherPackageProduct)) {
+            return false;
+        }
+        return Double.compare(usdPrice, otherPackageProduct.usdPrice) == 0
+                && Objects.equals(productId, otherPackageProduct.productId)
+                && Objects.equals(productName, otherPackageProduct.productName)
+                && Objects.equals(productDescription, otherPackageProduct.productDescription);
     }
 
     @Override

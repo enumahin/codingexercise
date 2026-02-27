@@ -14,14 +14,14 @@ public interface PackageService {
      * @param packageId unique package identifier
      * @return the matching package
      */
-    PackageDto getPackage(String packageId);
+    PackageDto getPackage(String packageId, boolean includeVoided);
 
     /**
      * Returns all existing packages.
      *
      * @return list of packages
      */
-    List<PackageDto> getPackages();
+    List<PackageDto> getPackages(boolean includeVoided);
 
     /**
      * Creates a new package from the provided data.

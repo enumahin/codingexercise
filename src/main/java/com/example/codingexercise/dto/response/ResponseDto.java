@@ -1,12 +1,10 @@
 package com.example.codingexercise.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.Objects;
-
 
 /**
  * Http response dto class.

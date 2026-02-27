@@ -19,5 +19,5 @@ public abstract class AbstractionContainerBaseTest {
     protected ObjectMapper objectMapper;
 
     @Autowired
-    private MockMvc mockMvc;
+    protected MockMvc mockMvc;
 }

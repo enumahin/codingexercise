@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -75,8 +76,9 @@ public class PackageController {
     @ApiResponse(responseCode = "404", description = "Package not found")
     public ResponseEntity<PackageDto> getPackage(
             @Parameter(description = "Unique identifier of the package")
-            @PathVariable String id) {
-        return ResponseEntity.ok(packageService.getPackage(id));
+            @PathVariable String id,
+            @RequestParam(required = false, defaultValue = "false") boolean includeVoided) {
+        return ResponseEntity.ok(packageService.getPackage(id, includeVoided));
     }
 
     /**
@@ -90,8 +92,9 @@ public class PackageController {
             description = "Packages returned successfully",
             content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = PackageDto.class)))
-    public ResponseEntity<List<PackageDto>> getPackages() {
-        return ResponseEntity.ok(packageService.getPackages());
+    public ResponseEntity<List<PackageDto>> getPackages(
+            @RequestParam(required = false, defaultValue = "false") boolean includeVoided) {
+        return ResponseEntity.ok(packageService.getPackages(includeVoided));
     }
 
     /**

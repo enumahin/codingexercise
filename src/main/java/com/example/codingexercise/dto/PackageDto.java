@@ -23,7 +23,7 @@ public class PackageDto {
 
     private String priceCurrency;
 
-    private Set<ProductDto> products;
+    private Set<PackageProductDto> products;
 
     private double packagePrice;
 

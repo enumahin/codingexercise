@@ -1,7 +1,6 @@
 package com.example.codingexercise.config.audit;
 
 import jakarta.persistence.PreUpdate;
-
 import java.time.LocalDateTime;
 
 /**

@@ -8,6 +8,10 @@ import io.swagger.v3.oas.annotations.info.License;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+
+/**
+ * Entry point for the Coding Exercise Spring Boot application and top-level OpenAPI configuration.
+ */
 @OpenAPIDefinition(
         info = @Info(
                 title = "Coding Exercise",
@@ -31,6 +35,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class CodingExerciseApplication {
 
+    /**
+     * Boots the Spring application context.
+     *
+     * @param args standard command-line arguments
+     */
     public static void main(String[] args) {
         SpringApplication.run(CodingExerciseApplication.class, args);
     }

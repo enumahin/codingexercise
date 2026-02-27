@@ -17,10 +17,25 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
+/**
+ * Central Spring Security configuration for the coding exercise API.
+ * <p>
+ * Exposes a basic-authenticated API for package endpoints while leaving health checks,
+ * documentation and the H2 console publicly accessible.
+ * </p>
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    /**
+     * Configures the HTTP security filter chain, including endpoint authorization rules
+     * and basic authentication.
+     *
+     * @param http the {@link HttpSecurity} to customize
+     * @return the configured {@link SecurityFilterChain}
+     * @throws Exception if the security configuration cannot be built
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -44,6 +59,12 @@ public class SecurityConfig {
         return http.build();
     }
 
+    /**
+     * Provides an in-memory user store for basic authentication.
+     *
+     * @param passwordEncoder encoder used to hash the configured password
+     * @return a {@link UserDetailsService} exposing a single demo user
+     */
     @Bean
     public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
         UserDetails user =
@@ -54,6 +75,11 @@ public class SecurityConfig {
         return new InMemoryUserDetailsManager(user);
     }
 
+    /**
+     * Exposes the password encoder used for hashing user passwords.
+     *
+     * @return BCrypt-based password encoder
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
