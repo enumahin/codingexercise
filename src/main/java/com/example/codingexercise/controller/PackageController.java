@@ -1,29 +1,32 @@
 package com.example.codingexercise.controller;
 
-import com.example.codingexercise.model.ProductPackage;
-import com.example.codingexercise.repository.PackageRepository;
+import com.example.codingexercise.dto.PackageDto;
+import com.example.codingexercise.service.PackageService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/packages")
 public class PackageController {
 
-    private final PackageRepository packageRepository;
+    private final PackageService packageService;
 
-    public PackageController(PackageRepository packageRepository) {
-        this.packageRepository = packageRepository;
+    public PackageController(PackageService packageService) {
+        this.packageService = packageService;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/packages")
-    public ProductPackage create(@RequestBody ProductPackage newProductPackage) {
-        return packageRepository.create(newProductPackage.getName(), newProductPackage.getDescription(), newProductPackage.getProductIds());
+    @PostMapping()
+    public ResponseEntity<PackageDto> createPackage(@RequestBody PackageDto packageDto) {
+        return ResponseEntity.ok(packageService.createPackage(packageDto));
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/packages/{id}")
-    public ProductPackage get(@PathVariable String id) {
-        return packageRepository.get(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<PackageDto> getPackage(@PathVariable String id) {
+        return ResponseEntity.ok(packageService.getPackage(id));
     }
 }
