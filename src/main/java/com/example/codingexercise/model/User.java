@@ -34,7 +34,7 @@ public class User implements UserDetails {
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("USER"));
+        return roles != null ? roles : List.of(new SimpleGrantedAuthority("USER"));
     }
 
     /**
@@ -44,7 +44,7 @@ public class User implements UserDetails {
      */
     @Override
     public String getPassword() {
-        return "";
+        return password != null ? password : "";
     }
 
     /**
@@ -54,6 +54,6 @@ public class User implements UserDetails {
      */
     @Override
     public String getUsername() {
-        return "";
+        return username != null ? username : "";
     }
 }

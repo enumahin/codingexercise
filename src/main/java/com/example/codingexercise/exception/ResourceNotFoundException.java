@@ -19,4 +19,14 @@ public class ResourceNotFoundException extends RuntimeException {
     public ResourceNotFoundException(String message) {
         super(message);
     }
+
+    /**
+     * Construct a new instance with a message and cause.
+     *
+     * @param message the message to set
+     * @param cause the cause to set
+     */
+    public ResourceNotFoundException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

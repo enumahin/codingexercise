@@ -122,7 +122,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         List<ObjectError> validationErrorList = ex.getBindingResult().getAllErrors();
 
         validationErrorList.forEach(error -> {
-            String fieldName = ((FieldError) error).getField();
+            String fieldName = error instanceof FieldError fieldError
+                    ? fieldError.getField() : error.getObjectName();
             String validationMessage = error.getDefaultMessage();
             validationErrors.put(fieldName, validationMessage);
         });

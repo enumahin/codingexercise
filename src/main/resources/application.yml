@@ -1,6 +1,15 @@
 server:
   port: 8077
 
+app:
+  exchange-rate:
+    url: https://api.frankfurter.dev/v1/latest?base=USD
+  product-service:
+    url: https://product-service.herokuapp.com/api/v1/products
+  security:
+    username: user
+    password: pass
+
 spring:
   application:
     name: Coding-Exercise
@@ -32,7 +41,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/codingexercise
     driverClassName: com.mysql.cj.jdbc.Driver
-    username: chnge-me
+    username: change-me
     password: change-me
 
   jpa:

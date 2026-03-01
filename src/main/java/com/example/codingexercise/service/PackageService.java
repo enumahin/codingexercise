@@ -1,6 +1,6 @@
 package com.example.codingexercise.service;
 
-import com.example.codingexercise.dto.PackageDto;
+import com.example.codingexercise.dto.ProductsPackageDto;
 import java.util.List;
 
 /**
@@ -14,14 +14,14 @@ public interface PackageService {
      * @param packageId unique package identifier
      * @return the matching package
      */
-    PackageDto getPackage(String packageId, boolean includeVoided);
+    ProductsPackageDto getPackage(String packageId, boolean includeVoided);
 
     /**
      * Returns all existing packages.
      *
      * @return list of packages
      */
-    List<PackageDto> getPackages(boolean includeVoided);
+    List<ProductsPackageDto> getPackages(boolean includeVoided);
 
     /**
      * Creates a new package from the provided data.
@@ -29,7 +29,7 @@ public interface PackageService {
      * @param packageDto package details to persist
      * @return the created package
      */
-    PackageDto createPackage(PackageDto packageDto);
+    ProductsPackageDto createPackage(ProductsPackageDto packageDto);
 
     /**
      * Updates an existing package.
@@ -38,7 +38,7 @@ public interface PackageService {
      * @param packageDto updated package details
      * @return the updated package
      */
-    PackageDto updatePackage(String id, PackageDto packageDto);
+    ProductsPackageDto updatePackage(String id, ProductsPackageDto packageDto);
 
     /**
      * Deletes the package with the given identifier.

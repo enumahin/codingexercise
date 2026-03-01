@@ -1,6 +1,6 @@
 package com.example.codingexercise.controller;
 
-import com.example.codingexercise.dto.PackageDto;
+import com.example.codingexercise.dto.ProductsPackageDto;
 import com.example.codingexercise.service.PackageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -50,14 +51,15 @@ public class PackageController {
     @ApiResponse(responseCode = "200",
             description = "Package created successfully",
             content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = PackageDto.class)))
-    public ResponseEntity<PackageDto> createPackage(
+                    schema = @Schema(implementation = ProductsPackageDto.class)))
+    public ResponseEntity<ProductsPackageDto> createPackage(
+            @Valid
             @RequestBody
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Details of the package to create",
                     required = true,
-                    content = @Content(schema = @Schema(implementation = PackageDto.class)))
-            PackageDto packageDto) {
+                    content = @Content(schema = @Schema(implementation = ProductsPackageDto.class)))
+            ProductsPackageDto packageDto) {
         return ResponseEntity.ok(packageService.createPackage(packageDto));
     }
 
@@ -72,12 +74,12 @@ public class PackageController {
     @ApiResponse(responseCode = "200",
             description = "Package found",
             content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = PackageDto.class)))
+                    schema = @Schema(implementation = ProductsPackageDto.class)))
     @ApiResponse(responseCode = "404", description = "Package not found")
-    public ResponseEntity<PackageDto> getPackage(
+    public ResponseEntity<ProductsPackageDto> getPackage(
             @Parameter(description = "Unique identifier of the package")
             @PathVariable String id,
-            @RequestParam(required = false, defaultValue = "false") boolean includeVoided) {
+            @RequestParam(name = "voided", required = false, defaultValue = "false") boolean includeVoided) {
         return ResponseEntity.ok(packageService.getPackage(id, includeVoided));
     }
 
@@ -91,10 +93,10 @@ public class PackageController {
     @ApiResponse(responseCode = "200",
             description = "Packages returned successfully",
             content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = PackageDto.class)))
-    public ResponseEntity<List<PackageDto>> getPackages(
-            @RequestParam(required = false, defaultValue = "false") boolean includeVoided) {
-        return ResponseEntity.ok(packageService.getPackages(includeVoided));
+                    schema = @Schema(implementation = ProductsPackageDto.class)))
+    public ResponseEntity<List<ProductsPackageDto>> getPackages(
+            @RequestParam(required = false, defaultValue = "false") boolean voided) {
+        return ResponseEntity.ok(packageService.getPackages(voided));
     }
 
     /**
@@ -109,12 +111,12 @@ public class PackageController {
     @ApiResponse(responseCode = "200",
             description = "Package updated successfully",
             content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = PackageDto.class)))
+                    schema = @Schema(implementation = ProductsPackageDto.class)))
     @ApiResponse(responseCode = "404", description = "Package not found")
-    public ResponseEntity<PackageDto> updatePackage(
+    public ResponseEntity<ProductsPackageDto> updatePackage(
             @Parameter(description = "Unique identifier of the package to update")
             @PathVariable String id,
-            @RequestBody PackageDto packageDto) {
+            @Valid @RequestBody ProductsPackageDto packageDto) {
         return ResponseEntity.ok(packageService.updatePackage(id, packageDto));
     }
 
