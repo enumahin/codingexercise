@@ -87,6 +87,7 @@ npm run dev
 ## Configuration
 
 - **Backend** (`src/main/resources/application.yml`):
+  - **Database**: Default is **H2** in-memory (no setup). If you prefer not to use H2, a **MySQL** profile is included: run with `--spring.profiles.active=mysql` and set the datasource URL, username, and password in the `spring.config.activate.on-profile: mysql` section (e.g. create a `codingexercise` database and update credentials).
   - `app.exchange-rate.url`: Frankfurter API URL (default: `https://api.frankfurter.dev/v1/latest?base=USD`).
   - `app.product-service.url`: Product API base URL (default: `https://product-service.herokuapp.com/api/v1/products`).
   - `app.security.username` / `app.security.password`: API Basic auth credentials (default: **user** / **pass**). If you change these, update the frontend proxy auth (e.g. in `frontend/vite.config.js`) when calling the backend in dev.
