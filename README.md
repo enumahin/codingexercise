@@ -60,10 +60,9 @@ java -jar target/codingexercise-*.jar
 
 ### 2. Run the frontend
 
-If the React app lives in a sibling `frontend` directory:
+Clone the `frontend` from the repository:
 
 ```bash
-cd ../frontend
 npm install
 npm run dev
 ```
