@@ -2,6 +2,7 @@ package com.example.codingexercise.service.impl;
 
 import static java.lang.String.format;
 
+import com.example.codingexercise.dto.ProductDto;
 import com.example.codingexercise.dto.ProductsPackageDto;
 import com.example.codingexercise.exception.ResourceNotFoundException;
 import com.example.codingexercise.model.Product;
@@ -11,9 +12,12 @@ import com.example.codingexercise.model.mapper.ProductsPackageMapper;
 import com.example.codingexercise.repository.PackageRepository;
 import com.example.codingexercise.service.ExchangeRateService;
 import com.example.codingexercise.service.PackageService;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -68,6 +72,7 @@ public class PackageServiceImpl implements PackageService {
         if (packageDto.getProducts() == null || packageDto.getProducts().isEmpty()) {
             throw new IllegalArgumentException("Products are required for a package");
         }
+        validateNoDuplicateProducts(packageDto.getProducts());
 
         ProductsPackage productsPackage = packageMapper.toEntity(packageDto);
         if (productsPackage.getPriceCurrency() == null || productsPackage.getPriceCurrency().isBlank()) {
@@ -97,9 +102,21 @@ public class PackageServiceImpl implements PackageService {
         if (packageDto.getProducts() == null || packageDto.getProducts().isEmpty()) {
             throw new IllegalArgumentException("Products are required for a package");
         }
+        validateNoDuplicateProducts(packageDto.getProducts());
         UUID uuid = parsePackageId(packageId);
         return packageRepository.findById(uuid)
                 .map(productsPackage -> {
+                    Set<String> existingProductIds = productsPackage.getProducts().stream()
+                            .map(Product::getProductId)
+                            .collect(Collectors.toSet());
+                    Set<String> newProductIds = packageDto.getProducts().stream()
+                            .map(ProductDto::getProductId)
+                            .filter(id -> id != null && !id.isBlank())
+                            .collect(Collectors.toSet());
+                    if (!newProductIds.containsAll(existingProductIds)) {
+                        throw new IllegalArgumentException(
+                                "Existing products cannot be removed from a package. You may only add new products.");
+                    }
                     productsPackage.setPackageName(packageDto.getPackageName());
                     productsPackage.setPackageDescription(packageDto.getPackageDescription());
                     String currency = packageDto.getPriceCurrency();
@@ -155,6 +172,20 @@ public class PackageServiceImpl implements PackageService {
         productsPackage.getProducts().forEach(product ->
              dto.getProducts().add(productMapper.toDto(product)));
         return dto;
+    }
+
+    private void validateNoDuplicateProducts(Collection<ProductDto> products) {
+        if (products == null) {
+            return;
+        }
+        List<String> ids = products.stream()
+                .map(ProductDto::getProductId)
+                .filter(id -> id != null && !id.isBlank())
+                .toList();
+        Set<String> unique = new HashSet<>(ids);
+        if (unique.size() < ids.size()) {
+            throw new IllegalArgumentException("A package cannot contain the same product more than once. Remove duplicate products.");
+        }
     }
 
     private void calculatePackagePrice(ProductsPackage productsPackage) {

@@ -35,7 +35,7 @@ public class ProductsPackage extends AuditTrail {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID packageId;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String packageName;
 
     @Column

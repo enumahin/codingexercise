@@ -239,6 +239,38 @@ class PackageServiceImplTest {
     }
 
     @Test
+    void givenDuplicateProductIds_whenCreatePackage_thenThrowsIllegalArgumentException() {
+        // Given: same productId twice (validation runs before mapper/repository are used)
+        ProductDto p1 = ProductDto.builder().productId("p1").productName("P1").usdPrice(1.0).build();
+        ProductsPackageDto createDto = ProductsPackageDto.builder()
+                .packageName("Pkg")
+                .priceCurrency("USD")
+                .products(Set.of(p1, ProductDto.builder().productId("p1").productName("P1").usdPrice(2.0).build()))
+                .build();
+
+        // When / Then
+        assertThrows(IllegalArgumentException.class, () -> packageService.createPackage(createDto));
+    }
+
+    @Test
+    void givenUpdateRemovesExistingProduct_whenUpdatePackage_thenThrowsIllegalArgumentException() {
+        // Given: existing package has products p1 and p2; update only sends p1
+        Product existingP1 = Product.builder().productId("p1").build();
+        Product existingP2 = Product.builder().productId("p2").build();
+        entity.setProducts(new HashSet<>(Set.of(existingP1, existingP2)));
+        when(packageRepository.findById(packageUuid)).thenReturn(Optional.of(entity));
+        ProductsPackageDto updateDto = ProductsPackageDto.builder()
+                .packageName("Updated")
+                .priceCurrency("USD")
+                .products(Set.of(ProductDto.builder().productId("p1").productName("P1").usdPrice(1.0).build()))
+                .build();
+
+        // When / Then
+        assertThrows(IllegalArgumentException.class,
+                () -> packageService.updatePackage(packageUuid.toString(), updateDto));
+    }
+
+    @Test
     void givenExistingPackage_whenDeletePackage_thenMarksVoidAndSaves() {
         // Given
         when(packageRepository.findById(packageUuid)).thenReturn(Optional.of(entity));
