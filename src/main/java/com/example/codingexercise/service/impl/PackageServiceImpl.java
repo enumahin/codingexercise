@@ -184,7 +184,8 @@ public class PackageServiceImpl implements PackageService {
                 .toList();
         Set<String> unique = new HashSet<>(ids);
         if (unique.size() < ids.size()) {
-            throw new IllegalArgumentException("A package cannot contain the same product more than once. Remove duplicate products.");
+            throw new IllegalArgumentException("A package cannot contain the same product more than once. "
+                    + "Remove duplicate products.");
         }
     }
 

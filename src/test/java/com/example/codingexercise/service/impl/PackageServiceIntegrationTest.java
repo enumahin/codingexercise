@@ -95,10 +95,16 @@ class PackageServiceIntegrationTest extends AbstractionContainerBaseTest {
     @Test
     @Transactional
     void givenExistingPackage_whenUpdatePackage_thenReturnsUpdatedAndGetReflectsChanges() {
-        // Given
+        // Given: create package with prod-1; update keeps prod-1 and adds prod-2 (existing products cannot be removed)
         ProductsPackageDto created = packageService.createPackage(newPackageDto("Integration Pkg 3"));
         ProductsPackageDto update = newPackageDto("Updated Name");
         update.setProducts(Set.of(
+                ProductDto.builder()
+                        .productId("prod-1")
+                        .productName("Product One")
+                        .productDescription("Desc")
+                        .usdPrice(50.0)
+                        .build(),
                 ProductDto.builder()
                         .productId("prod-2")
                         .productName("Product Two")
@@ -112,9 +118,9 @@ class PackageServiceIntegrationTest extends AbstractionContainerBaseTest {
 
         // Then
         assertEquals("Updated Name", updated.getPackageName());
-        assertEquals(1, updated.getProducts().size());
-        assertTrue(updated.getProducts().stream()
-                .anyMatch(p -> "prod-2".equals(p.getProductId())));
+        assertEquals(2, updated.getProducts().size());
+        assertTrue(updated.getProducts().stream().anyMatch(p -> "prod-1".equals(p.getProductId())));
+        assertTrue(updated.getProducts().stream().anyMatch(p -> "prod-2".equals(p.getProductId())));
         assertEquals("Updated Name", found.getPackageName());
     }
 
